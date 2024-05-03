@@ -1,0 +1,78 @@
+-----1.DHCP single network---
+-----2.DHCP CLI----
+router exit exit
+
+Router
+el    /  en
+conf t
+
+int Gig0/1
+ip helper-address 192.168.1.2 ( dhcp ip)
+
+no shutdown
+exit
+do w
+
+int Gig0/2
+ip helper-address 192.168.1.2
+no shutdown
+exit
+do w
+
+-----3.setup new router and setup ip address------ 
+set it automatically
+int Gig0/1
+ip address 192.168.2.1 255.255.255.0
+ip helper-address 192.168.1.2
+no shutdown
+exit
+do w 
+
+similarlly, gig0/2
+
+------4.MAKE ROUTER ACT AS A DHCP SERVER-----
+
+en 
+conf t
+
+int Fa0/0 
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+exit
+
+do w
+
+ip dhcp ?
+ip dhcp pool ?
+
+ip dhcp pool networkONE
+
+default-router 192.168.1.1
+
+network 192.168.1.0 255.255.255.0
+no shutdown
+exit 
+
+do w
+
+-----
+
+int Fa0/0 
+ip address 192.168.2.1 255.255.255.0
+no shutdown
+exit
+
+do w
+
+ip dhcp ?
+ip dhcp pool ?
+
+ip dhcp pool networkTWO
+
+default-router 192.168.2.1
+
+network 192.168.2.0 255.255.255.0
+no shutdown
+exit 
+
+do w
